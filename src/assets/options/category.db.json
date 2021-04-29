@@ -1,0 +1,22 @@
+{
+  "costs": [
+    {
+      "title": "Еда",
+      "id": "food"
+    },
+    {
+      "title": "Разное",
+      "id": "other"
+    }
+  ],
+  "incomes": [
+    {
+      "title": "Зарплата",
+      "id": "salary"
+    },
+    {
+      "title": "Бонус",
+      "id": "bonus"
+    }
+  ]
+}
