@@ -1,0 +1,17 @@
+@import "../../assets/styles/vars";
+
+.container {
+  box-shadow: none;
+  padding: 0;
+  justify-content: space-between;
+}
+
+.btn {
+  width: ($container-width - (2 + 1) * $padding) / 2;
+  padding: $padding/2;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  color: white;
+  background-color: lightgreen;
+}

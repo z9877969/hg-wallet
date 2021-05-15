@@ -1,10 +1,12 @@
-const Button = ({ title, type = "button", cbOnClick }) => {
+const Button = ({ title, type = "button", cbOnClick, className }) => {
   return cbOnClick ? (
-    <button type={type} onClick={cbOnClick}>
+    <button className={className} type={type} onClick={cbOnClick}>
       {title}
     </button>
   ) : (
-    <button type={type}>{title}</button>
+    <button className={className} type={type}>
+      {title}
+    </button>
   );
 };
 

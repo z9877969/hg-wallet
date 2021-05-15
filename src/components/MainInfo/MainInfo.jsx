@@ -1,26 +1,35 @@
+import Wrapper from "../_share/Wrapper/Wrapper";
+import scss from "./MainInfo.module.scss";
+
 const MainInfo = ({ title, transId, handleToggleTransId }) => {
   return (
-    <>
-      <h2>{title}</h2>
-      <button type="button" onClick={() => handleToggleTransId(transId)}>
+    <Wrapper>
+      <table className={scss.table}>
+        <tr className={scss.row}>
+          <th className={scss.title}>{title}</th>
+          <th className={scss.currency}>UAH</th>
+        </tr>
+        <tr className={scss.row + " " + scss.border}>
+          <td className={scss.period}>Период</td>
+          <td className={scss.total}>0.00</td>
+        </tr>
+        <tr className={scss.row + " " + scss.border}>
+          <td className={scss.period}>Период</td>
+          <td className={scss.total}>0.00</td>
+        </tr>
+        <tr className={scss.row + " " + scss.border}>
+          <td className={scss.period}>Период</td>
+          <td className={scss.total}>0.00</td>
+        </tr>
+      </table>
+      <button
+        className={scss.btn}
+        type="button"
+        onClick={() => handleToggleTransId(transId)}
+      >
         Add
       </button>
-      <span>UAH</span>
-      <ul>
-        <li>
-          <span>Период</span>
-          <span>0.00</span>
-        </li>
-        <li>
-          <span>Период</span>
-          <span>0.00</span>
-        </li>
-        <li>
-          <span>Период</span>
-          <span>0.00</span>
-        </li>
-      </ul>
-    </>
+    </Wrapper>
   );
 };
 
