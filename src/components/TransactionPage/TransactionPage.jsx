@@ -1,20 +1,27 @@
 import { Component } from "react";
+import { connect } from "react-redux";
+import { Route } from "react-router";
 import moment from "moment";
 import CategoriesList from "../CategoriesList/CategoriesList";
 import Button from "../_share/Button/Button";
 import LabelInput from "../_share/LabelInput/LabelInput";
 import Title from "../_share/Title/Title";
 import categoryOptions from "../../assets/options/category.db.json";
+import {
+  addCosts,
+  addIncomes,
+} from "../../redux/transactions/transactionsActions";
 
 class TransactionPage extends Component {
   state = {
     date: moment().format("YYYY-MM-DD"),
     time: moment().format("HH:mm"),
-    category: categoryOptions[this.props.transId][0],
+    category: categoryOptions[this.props.match.params.transId][0],
+    // category: "",
     sum: "",
     currency: "",
     comment: "",
-    isCategoryList: false,
+    // isCategoryList: false,
   };
 
   handleChange = (e) => {
@@ -23,19 +30,27 @@ class TransactionPage extends Component {
   };
 
   handleGoBack = () => {
-    this.props.handleToggleTransId();
+    const { location, history } = this.props;
+    history.push(location.state?.from || "/");
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const {isCategoryList, ...dataForm} = this.state;
-    const { handleAddTransaction, transId } = this.props;
-    handleAddTransaction(transId, dataForm);
+    const { transId } = this.props.match.params;
+    const { addCosts, addIncomes } = this.props;
+    transId === "costs" && addCosts(this.state);
+    transId === "incomes" && addIncomes(this.state);
     this.handleGoBack();
   };
 
-  handleToggleCategoryList = () => {
-    this.setState((prev) => ({ isCategoryList: !prev.isCategoryList }));
+  handleOpenCategoryList = () => {
+    const { history, match, location } = this.props;
+    history.push({
+      pathname: `${match.url}/categories`,
+      state: {
+        from: location,
+      },
+    });
   };
 
   handleChangeCategory = (opts) => {
@@ -43,88 +58,106 @@ class TransactionPage extends Component {
   };
 
   render() {
+    const { date, time, category, sum, currency, comment, isCategoryList } =
+      this.state;
+
+    const { location } = this.props;
     const {
-      date,
-      time,
-      category,
-      sum,
-      currency,
-      comment,
-      isCategoryList,
-    } = this.state;
+      params: { transId },
+      url,
+    } = this.props.match;
 
-    const { transId } = this.props;
+    const isForm = !location.pathname.split("/").includes("categories");
 
-    return !isCategoryList ? (
-      <form onSubmit={this.handleSubmit}>
-        <Title title="TransactionPage" />
+    return (
+      <>
+        {isForm && (
+          <form onSubmit={this.handleSubmit}>
+            <Title title="TransactionPage" />
 
-        <Button title="GoBack" cbOnClick={this.handleGoBack} />
-        <Title />
-        <Button title="OK" type="submit" />
-        <div>
-          <LabelInput
-            type="date"
-            title="День"
-            name="date"
-            value={date}
-            cbOnChange={this.handleChange}
-          />
-        </div>
-        <div>
-          <LabelInput
-            type="time"
-            title="Время"
-            name="time"
-            value={time}
-            cbOnChange={this.handleChange}
-          />
-        </div>
-        <div>
-          <LabelInput
-            title="Категория"
-            type="button"
-            name="category"
-            value={category.title}
-            cbOnClick={this.handleToggleCategoryList}
-          />
-        </div>
-        <div>
-          <LabelInput
-            title="Сумма"
-            name="sum"
-            value={sum}
-            cbOnChange={this.handleChange}
-            placeholder="Сумма..."
-          />
-        </div>
-        <div>
-          <LabelInput
-            title="Валюта"
-            type="button"
-            name="currency"
-            value={"UAH"}
-            cbOnClick={() => {}}
-          />
-        </div>
-        <div>
-          <LabelInput
-            title="Комментарий"
-            name="comment"
-            value={comment}
-            cbOnChange={this.handleChange}
-            placeholder="Комментарий"
-          />
-        </div>
-      </form>
-    ) : (
-      <CategoriesList
-        handleToggleCategoryList={this.handleToggleCategoryList}
-        handleChangeCategory={this.handleChangeCategory}
-        catOptions={categoryOptions[transId]}
-      />
+            <Button title="GoBack" cbOnClick={this.handleGoBack} />
+            <Title />
+            <Button title="OK" type="submit" />
+            <div>
+              <LabelInput
+                type="date"
+                title="День"
+                name="date"
+                value={date}
+                cbOnChange={this.handleChange}
+              />
+            </div>
+            <div>
+              <LabelInput
+                type="time"
+                title="Время"
+                name="time"
+                value={time}
+                cbOnChange={this.handleChange}
+              />
+            </div>
+            <div>
+              <LabelInput
+                title="Категория"
+                type="button"
+                name="category"
+                value={category.title}
+                cbOnClick={this.handleOpenCategoryList}
+              />
+            </div>
+            <div>
+              <LabelInput
+                title="Сумма"
+                name="sum"
+                value={sum}
+                cbOnChange={this.handleChange}
+                placeholder="Сумма..."
+              />
+            </div>
+            <div>
+              <LabelInput
+                title="Валюта"
+                type="button"
+                name="currency"
+                value={"UAH"}
+                cbOnClick={() => {}}
+              />
+            </div>
+            <div>
+              <LabelInput
+                title="Комментарий"
+                name="comment"
+                value={comment}
+                cbOnChange={this.handleChange}
+                placeholder="Комментарий"
+              />
+            </div>
+          </form>
+        )}
+        <Route
+          path={`${url}/categories`}
+          render={(props) => (
+            <CategoriesList
+              {...props}
+              handleToggleCategoryList={this.handleToggleCategoryList}
+              handleChangeCategory={this.handleChangeCategory}
+              catOptions={categoryOptions[transId]}
+            />
+          )}
+        />
+      </>
     );
   }
 }
 
-export default TransactionPage;
+const mapDispatchProps = {
+  addCosts,
+  addIncomes,
+};
+
+export default connect(null, mapDispatchProps)(TransactionPage);
+
+// const con = (mSTP, mDTP) => (WrapedComponent) => {
+//   //
+//   return <WrapedComponent  />
+// }

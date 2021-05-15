@@ -1,5 +1,5 @@
 import Wrapper from "../_share/Wrapper/Wrapper";
-import scss from './BtnsAnalitics.module.scss';
+import scss from "./BtnsAnalitics.module.scss";
 
 const BtnsAnalitics = ({ children }) => {
   return (

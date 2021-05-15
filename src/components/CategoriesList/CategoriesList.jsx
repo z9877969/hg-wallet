@@ -3,18 +3,21 @@ import LabelInput from "../_share/LabelInput/LabelInput";
 import Title from "../_share/Title/Title";
 
 const CategoriesList = ({
-  handleToggleCategoryList,
   handleChangeCategory,
   catOptions,
+  history,
+  location,
 }) => {
   const handleClickCategory = ({ id, title }) => {
     handleChangeCategory({ id, title });
-    handleToggleCategoryList();
+    handleGoBack();
   };
+
+  const handleGoBack = () => history.push(location.state?.from || "/");
 
   return (
     <>
-      <Button title="GoBack" cbOnClick={handleToggleCategoryList} />
+      <Button title="GoBack" cbOnClick={handleGoBack} />
       <Title title="Категории" />
       <ul>
         {catOptions.map(({ id, title }) => (
