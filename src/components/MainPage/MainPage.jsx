@@ -3,18 +3,18 @@ import MainInfo from "../MainInfo/MainInfo";
 import Button from "../_share/Button/Button";
 import Wrapper from "../_share/Wrapper/Wrapper";
 
-const MainPage = ({ handleToggleTransId, history, location }) => {
-  const handleOpenTransaction = (transId) => {
+const MainPage = ({ handleTogglecategoryId, history, location }) => {
+  const handleOpenTransaction = (categoryId) => {
     history.push({
-      pathname: `/${transId}/add`,
+      pathname: `/${categoryId}/add`,
       state: {
         from: location,
       },
     });
   };
-  const handleOpenAnalitics = (transId) => {
+  const handleOpenAnalitics = (categoryId) => {
     history.push({
-      pathname: `/${transId}/list`,
+      pathname: `/${categoryId}/list`,
       state: {
         from: location,
       },
@@ -26,12 +26,12 @@ const MainPage = ({ handleToggleTransId, history, location }) => {
       <h1>MainPage</h1>
       <MainInfo
         title="Расходы"
-        transId="costs"
+        categoryId="costs"
         handleOpenTransaction={handleOpenTransaction}
       />
       <MainInfo
         title="Доходы"
-        transId="incomes"
+        categoryId="incomes"
         handleOpenTransaction={handleOpenTransaction}
       />
       <MainInfo title="Баланс" />

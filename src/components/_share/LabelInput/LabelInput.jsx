@@ -8,7 +8,7 @@ const LabelInput = ({
   placeholder = "",
 }) => {
   return (
-    <label>
+    <label style={{display: "block"}}>
       <span>{title}</span>
       {cbOnClick && (
         <input

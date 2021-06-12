@@ -1,7 +1,7 @@
 import Wrapper from "../_share/Wrapper/Wrapper";
 import scss from "./MainInfo.module.scss";
 
-const MainInfo = ({ title, transId, handleOpenTransaction }) => {
+const MainInfo = ({ title, categoryId, handleOpenTransaction }) => {
   return (
     <Wrapper>
       <table className={scss.table}>
@@ -25,7 +25,7 @@ const MainInfo = ({ title, transId, handleOpenTransaction }) => {
       <button
         className={scss.btn}
         type="button"
-        onClick={() => handleOpenTransaction(transId)}
+        onClick={() => handleOpenTransaction(categoryId)}
       >
         Add
       </button>
