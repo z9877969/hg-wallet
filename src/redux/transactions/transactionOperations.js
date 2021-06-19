@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getError } from "../error/handlerError";
 import {
   addCostsError,
   addCostsRequest,
@@ -28,16 +29,35 @@ export const getIncomes = () => (dispatch) => {
   axios
     .get("/incomes")
     .then(({ data }) => dispatch(getIncomesSuccess(data)))
-    .catch((err) => dispatch(getIncomesError(err.message)));
+    .catch((err) =>
+      dispatch(
+        getError({
+          error: err,
+          requestCallback: getIncomes,
+          requestData: null,
+          errorType: "transacions/getIncomesError",
+        })
+      )
+    );
 };
 
 export const getCosts = () => (dispatch) => {
   dispatch(getCostsRequest());
 
+  console.log(getError);
   axios
     .get("/costs")
     .then(({ data }) => dispatch(getCostsSuccess(data)))
-    .catch((err) => dispatch(getCostsError(err.message)));
+    .catch((err) => {
+      dispatch(
+        getError({
+          error: err,
+          requestCallback: getCosts,
+          requestData: null,
+          errorType: "transacions/getCostsError",
+        })
+      );
+    });
 };
 
 export const addIncomes = (data) => (dispatch) => {
@@ -46,7 +66,16 @@ export const addIncomes = (data) => (dispatch) => {
   axios
     .post("/incomes", data)
     .then(({ data }) => dispatch(addIncomesSuccess(data)))
-    .catch((err) => dispatch(addIncomesError(err.message)));
+    .catch((err) =>
+      dispatch(
+        getError({
+          error: err,
+          requestCallback: addIncomes,
+          requestData: data,
+          errorType: "transacions/addIncomesError",
+        })
+      )
+    );
 };
 
 export const addCosts = (data) => (dispatch) => {
@@ -55,7 +84,16 @@ export const addCosts = (data) => (dispatch) => {
   axios
     .post("/costs", data)
     .then(({ data }) => dispatch(addCostsSuccess(data)))
-    .catch((err) => dispatch(addCostsError(err.message)));
+    .catch((err) =>
+      dispatch(
+        getError({
+          error: err,
+          requestCallback: addCosts,
+          requestData: data,
+          errorType: "transacions/addCostsError",
+        })
+      )
+    );
 };
 
 export const editIncomes = (data, id) => (dispatch) => {
@@ -64,7 +102,16 @@ export const editIncomes = (data, id) => (dispatch) => {
   axios
     .patch("/incomes/" + id, data)
     .then(({ data }) => dispatch(editIncomesSuccess(data)))
-    .catch((err) => dispatch(editIncomesError(err.message)));
+    .catch((err) =>
+      dispatch(
+        getError({
+          error: err,
+          requestCallback: editIncomes,
+          requestData: [data, id],
+          errorType: "transacions/editIncomesError",
+        })
+      )
+    );
 };
 
 export const editCosts = (data, id) => (dispatch) => {
@@ -73,5 +120,10 @@ export const editCosts = (data, id) => (dispatch) => {
   axios
     .patch("/costs/" + id, data)
     .then(({ data }) => dispatch(editCostsSuccess(data)))
-    .catch((err) => dispatch(editCostsError(err.message)));
+    .catch((err) => dispatch(getError({
+      error: err,
+      requestCallback: editCosts,
+      requestData: [data, id],
+      errorType: "transacions/editCostsError",
+    })));
 };

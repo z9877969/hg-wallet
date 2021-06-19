@@ -23,7 +23,6 @@ const MainPage = ({ handleTogglecategoryId, history, location }) => {
 
   return (
     <>
-      <h1>MainPage</h1>
       <MainInfo
         title="Расходы"
         categoryId="costs"

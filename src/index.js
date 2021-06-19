@@ -7,13 +7,16 @@ import store, { persistor } from "./redux/store";
 
 import "./index.scss";
 import App from "./components/App/App";
+import AuthProvider from "./components/AuthContext/AuthContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       {/* <PersistGate loading={null} persistor={persistor}> */}
       <BrowserRouter>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </BrowserRouter>
       {/* </PersistGate> */}
     </Provider>
